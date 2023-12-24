@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Keyboard,
   Image,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import {
   responsiveHeight,
@@ -17,13 +18,14 @@ import {
 } from "react-native-responsive-dimensions";
 import Icon from "react-native-vector-icons/FontAwesome";
 import * as ImagePicker from "expo-image-picker";
-
-// ... (previous imports)
+import axios from "axios";
 
 const AfterVisualQA = ({ navigation, route }) => {
   const { photo } = route.params;
   const [text, settext] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [resText, setresText] = useState("");
+  const [isloading, setisloading] = useState(false);
 
   const handleTap = () => {
     // Dismiss the keyboard on tap anywhere
@@ -51,6 +53,44 @@ const AfterVisualQA = ({ navigation, route }) => {
       }
     } catch (error) {
       console.error("Error picking an image", error);
+    }
+  };
+
+  const askQuestion = async () => {
+    setisloading(true);
+    try {
+      const formData = new FormData();
+      formData.append("text", text); // Use the correct field name expected by the server
+
+      if (selectedImage) {
+        // If an image is selected, append it to the form data
+        const imageUri = selectedImage.uri;
+        const imageName = imageUri.split("/").pop();
+        const imageType = "image/jpeg"; // Adjust the type based on your image
+
+        formData.append("image", {
+          uri: imageUri,
+          name: imageName,
+          type: imageType,
+        });
+      }
+
+      // Make the HTTP POST request using axios
+      const response = await axios.post(
+        "http://192.168.1.4:5050/visualQA",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Important for FormData
+          },
+        }
+      );
+
+      // Handle the response as needed
+      setisloading(false);
+      setresText(response.data);
+    } catch (error) {
+      console.error("Error asking question:", error);
     }
   };
 
@@ -98,16 +138,14 @@ const AfterVisualQA = ({ navigation, route }) => {
                   marginLeft: 10,
                   height: responsiveHeight(5),
                   justifyContent: "center",
-                  alignItems: "center",
-                  width: responsiveWidth(30),
                 }}
                 onPress={openGallery}
               >
                 <Text style={{ fontSize: 20, color: "white", margin: 4 }}>
-                  Gallery <Icon name="image" color="#fff" size={15} />
+                  Choose a picture <Icon name="image" color="#fff" size={15} />
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={{
                   backgroundColor: "#4A5568",
                   borderRadius: 10,
@@ -122,7 +160,7 @@ const AfterVisualQA = ({ navigation, route }) => {
                 <Text style={{ fontSize: 20, color: "white", margin: 4 }}>
                   Camera <Icon name="camera" color="#fff" size={15} />
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
 
             <View>
@@ -160,11 +198,31 @@ const AfterVisualQA = ({ navigation, route }) => {
                   width: responsiveWidth(90),
                   height: responsiveHeight(5),
                 }}
+                onPress={askQuestion}
+                disabled={isloading}
               >
-                <Text style={{ fontSize: 18, color: "white", margin: 4 }}>
-                  Ask <Icon name="send" color="#fff" size={15} />
-                </Text>
+                {isloading ? (
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      fontSize: 20,
+                      color: "white",
+                      margin: 4,
+                    }}
+                  >
+                    Asking <ActivityIndicator size="small" color="#fff" />
+                  </Text>
+                ) : (
+                  <Text style={{ fontSize: 18, color: "white", margin: 4 }}>
+                    Ask <Icon name="send" color="#fff" size={15} />
+                  </Text>
+                )}
               </TouchableOpacity>
+            </View>
+            <View className="bg-slate-900 m-3">
+              <Text className="text-white text-md m-4">{resText}</Text>
             </View>
           </View>
         </KeyboardAvoidingView>
