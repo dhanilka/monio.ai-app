@@ -26,7 +26,13 @@ export default function App() {
         <Stack.Screen
           name="Home"
           component={Home}
-          options={{ headerShown: false }}
+          options={{
+            title: "Home",
+            headerStyle: {
+              backgroundColor: "#1F2937",
+            },
+            headerTintColor: "#fff",
+          }}
         />
         <Stack.Screen
           name="Chat"
@@ -76,7 +82,7 @@ export default function App() {
           name="AfterVisualQA"
           component={AfterVisualQA}
           options={{
-            title: "Monio AVQA",
+            title: "VQA-MODEL",
             headerStyle: {
               backgroundColor: "#1F2937",
             },

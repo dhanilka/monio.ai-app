@@ -31,7 +31,7 @@ const Paraphrase = () => {
     setisloading(true);
 
     axios
-      .post("http://192.168.1.4:5050/paraphrase", {
+      .post("http://monio.yourfreekeys.com/paraphrase", {
         text: text,
       })
       .then((res) => {

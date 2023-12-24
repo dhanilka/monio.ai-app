@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -17,18 +17,28 @@ import {
   responsiveFontSize,
 } from "react-native-responsive-dimensions";
 import Icon from "react-native-vector-icons/FontAwesome";
+import MIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 
 const AfterVisualQA = ({ navigation, route }) => {
-  const { photo } = route.params;
   const [text, settext] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [resText, setresText] = useState("");
   const [isloading, setisloading] = useState(false);
+  const [chooseText, setchooseText] = useState("");
+
+  useEffect(() => {
+    settext("");
+    setresText("");
+    if (selectedImage) {
+      setchooseText("Change picture");
+    } else {
+      setchooseText("Choose a picture");
+    }
+  }, [selectedImage]);
 
   const handleTap = () => {
-    // Dismiss the keyboard on tap anywhere
     Keyboard.dismiss();
   };
 
@@ -57,6 +67,11 @@ const AfterVisualQA = ({ navigation, route }) => {
   };
 
   const askQuestion = async () => {
+    if (!text || !selectedImage) {
+      alert("Please add a question and an image");
+      return;
+    }
+
     setisloading(true);
     try {
       const formData = new FormData();
@@ -77,7 +92,7 @@ const AfterVisualQA = ({ navigation, route }) => {
 
       // Make the HTTP POST request using axios
       const response = await axios.post(
-        "http://192.168.1.4:5050/visualQA",
+        "http://monio.yourfreekeys.com/visualQA",
         formData,
         {
           headers: {
@@ -112,16 +127,21 @@ const AfterVisualQA = ({ navigation, route }) => {
                   }}
                   source={{ uri: selectedImage.uri }}
                 />
-              ) : photo ? (
-                <Image
-                  style={{
-                    width: responsiveWidth(80),
-                    height: responsiveHeight(30),
-                    resizeMode: "contain",
-                  }}
-                  source={{ uri: "data:image/jpg;base64," + photo.base64 }}
-                />
-              ) : null}
+              ) : (
+                <View className="pb-8 pt-14">
+                  <View className="flex-row justify-center items-center">
+                    <Text className="text-white font-bold text-2xl">
+                      MONIO VQA
+                    </Text>
+                    <View className="bg-slate-600 ml-2 rounded-lg">
+                      <Text className=" m-2 text-white">BETA</Text>
+                    </View>
+                  </View>
+                  <Text className="text-gray-400">
+                    Developed by Dhanilka Dasanayaka
+                  </Text>
+                </View>
+              )}
             </View>
 
             <View
@@ -129,43 +149,46 @@ const AfterVisualQA = ({ navigation, route }) => {
                 flexDirection: "row",
                 justifyContent: "space-evenly",
                 paddingTop: 4,
+                paddingBottom: responsiveHeight(4),
               }}
             >
               <TouchableOpacity
                 style={{
                   backgroundColor: "#4A5568",
                   borderRadius: 10,
-                  marginLeft: 10,
-                  height: responsiveHeight(5),
+
+                  height: responsiveHeight(4),
                   justifyContent: "center",
+                  alignItems: "center",
                 }}
                 onPress={openGallery}
               >
-                <Text style={{ fontSize: 20, color: "white", margin: 4 }}>
-                  Choose a picture <Icon name="image" color="#fff" size={15} />
+                <Text style={{ fontSize: 12, color: "white", margin: 10 }}>
+                  {chooseText} <Icon name="image" color="#fff" size={12} />
                 </Text>
               </TouchableOpacity>
-              {/* <TouchableOpacity
-                style={{
-                  backgroundColor: "#4A5568",
-                  borderRadius: 10,
-                  marginLeft: 10,
-                  height: responsiveHeight(5),
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: responsiveWidth(30),
-                }}
-                onPress={() => navigation.navigate("Camera")}
-              >
-                <Text style={{ fontSize: 20, color: "white", margin: 4 }}>
-                  Camera <Icon name="camera" color="#fff" size={15} />
-                </Text>
-              </TouchableOpacity> */}
+              {selectedImage ? (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: "#4A5568",
+                    borderRadius: 10,
+
+                    height: responsiveHeight(4),
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  onPress={() => setSelectedImage(null)}
+                >
+                  <Text style={{ fontSize: 12, color: "white", margin: 10 }}>
+                    Remove <MIcon name="close" color="#fff" size={12} />
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
             </View>
 
             <View>
               <TextInput
-                placeholder="Enter your question"
+                placeholder="Ask your question here"
                 placeholderTextColor="grey"
                 multiline={true}
                 numberOfLines={100}
@@ -212,17 +235,28 @@ const AfterVisualQA = ({ navigation, route }) => {
                       margin: 4,
                     }}
                   >
-                    Asking <ActivityIndicator size="small" color="#fff" />
+                    Thinking <ActivityIndicator size="small" color="#fff" />
                   </Text>
                 ) : (
                   <Text style={{ fontSize: 18, color: "white", margin: 4 }}>
-                    Ask <Icon name="send" color="#fff" size={15} />
+                    Ask monio{" "}
+                    <MIcon
+                      name="robot-confused-outline"
+                      color="#fff"
+                      size={20}
+                    />
                   </Text>
                 )}
               </TouchableOpacity>
             </View>
-            <View className="bg-slate-900 m-3">
-              <Text className="text-white text-md m-4">{resText}</Text>
+            <View>
+              {resText ? (
+                <View className="bg-gray-900 m-3 rounded-md">
+                  <Text selectable={true} className="text-white text-md m-4">
+                    {resText}
+                  </Text>
+                </View>
+              ) : null}
             </View>
           </View>
         </KeyboardAvoidingView>

@@ -15,7 +15,7 @@ const Home = ({ navigation }) => {
       </View>
       <View>
         <Text className="text-white  text-center">
-          Experience the high-powered Gemini model
+          Experience the high-powered Monio LLM
         </Text>
       </View>
       <ScrollView className="pt-4 m-4">
@@ -40,7 +40,7 @@ const Home = ({ navigation }) => {
         <View className="pt-4">
           <TouchableOpacity
             className="bg-slate-700 p-2 rounded-lg"
-            onPress={() => navigation.navigate("VisualQA")}
+            onPress={() => navigation.navigate("AfterVisualQA")}
           >
             <Text className="text-white text-lg font-bold">
               Visual Question Answering{" "}
@@ -82,6 +82,24 @@ const Home = ({ navigation }) => {
               Discover the power of Text Paraphrasing! Our advanced AI, equipped
               with cutting-edge capabilities, reimagines text creatively for
               clearer communication and enhanced understanding.
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View className="pt-4">
+          <TouchableOpacity
+            className="bg-slate-700 p-2 rounded-lg"
+            onPress={() => navigation.navigate("Paraphrase")}
+          >
+            <Text className="text-white text-lg font-bold">
+              Text Generation{" "}
+              <Icon
+                name="card-bulleted-settings-outline"
+                color="#fff"
+                size={20}
+              />
+            </Text>
+            <Text className="text-slate-300">
+              Discover the power of Text Generation! Large language model.
             </Text>
           </TouchableOpacity>
         </View>

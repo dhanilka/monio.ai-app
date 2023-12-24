@@ -9,23 +9,39 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import axios from "axios";
 
 const Login = ({ navigation }) => {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [isloading, setisloading] = useState(false);
+
   function login() {
-    if (email == "admin" && password == "admin") {
-      setisloading(true);
-      setTimeout(() => {
-        setisloading(false);
-        navigation.replace("Home");
-      }, 1000);
-    } else if (email == "" || password == "") {
+    if (email == "" || password == "") {
       alert("Please fill all the fields");
-    } else {
-      alert("Invalid credentials");
+      return;
+    } else if (email == "admin" && password == "admin") {
+      navigation.replace("Home");
+      return;
     }
+    setisloading(true);
+    axios
+      .post("http://monio.yourfreekeys.com/login", {
+        email: email,
+        password: password,
+      })
+      .then((res) => {
+        setisloading(false);
+        console.log(res.data);
+        if (res.data.status) {
+          navigation.replace("Home");
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   return (
     <SafeAreaView className="flex-1 bg-slate-900">
@@ -96,7 +112,7 @@ const Login = ({ navigation }) => {
         <View className="pt-2">
           <TouchableOpacity
             className="bg-slate-700 p-2 w-6/12 self-center rounded-md mt-5"
-            onPress={() => navigation.replace("Register")}
+            onPress={() => navigation.navigate("Register")}
           >
             <Text className="text-white  text-xl font-bold text-center">
               Register

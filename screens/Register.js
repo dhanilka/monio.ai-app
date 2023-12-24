@@ -1,16 +1,16 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, Button } from "react-native";
 import React from "react";
 
 const Register = ({ navigation }) => {
   return (
-    <View className="flex-1 justify-center items-center">
-      <Text>Register</Text>
-      <TouchableOpacity
-        className="bg-blue-500 p-2 rounded-md mt-5"
+    <View className="bg-slate-700 flex-1 justify-center items-center">
+      <Text className="text-white font-bold text-2xl">
+        Contact Dhanilka for registration. Whatsapp - +94764145565
+      </Text>
+      <Button
+        title="Go Back"
         onPress={() => navigation.replace("Login")}
-      >
-        <Text className="text-white font-bold text-2xl">Login</Text>
-      </TouchableOpacity>
+      ></Button>
     </View>
   );
 };
