@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "monio.ai",
-    "slug": "monio.ai",
+    "name": "monio_ai",
+    "slug": "monio_ai",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,21 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dhanilka.monio_ai",
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fa388dd3-3128-4990-9ef4-b96d2adf193c"
+      }
     }
   }
 }

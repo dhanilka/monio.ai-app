@@ -1,20 +1,89 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import "react-native-gesture-handler";
+import Home from "./screens/Home";
+import Login from "./screens/Login";
+import Register from "./screens/Register";
+import Chat from "./screens/Chat";
+import Paraphrase from "./screens/Paraphrase";
+import VisualQA from "./screens/VisualQA";
+import Camerax from "./screens/Camera";
+import AfterVisualQA from "./screens/AfterVQA";
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
+          options={{
+            title: "Monio Chat",
+            headerStyle: {
+              backgroundColor: "#1F2937",
+            },
+            headerTintColor: "#fff",
+          }}
+        />
+        <Stack.Screen
+          name="Paraphrase"
+          component={Paraphrase}
+          options={{
+            title: "Monio Paraphrase",
+            headerStyle: {
+              backgroundColor: "#1F2937",
+            },
+            headerTintColor: "#fff",
+          }}
+        />
+        <Stack.Screen
+          name="VisualQA"
+          component={VisualQA}
+          options={{
+            title: "Monio Visual QA",
+            headerStyle: {
+              backgroundColor: "#1F2937",
+            },
+            headerTintColor: "#fff",
+          }}
+        />
+        <Stack.Screen
+          name="Camera"
+          component={Camerax}
+          options={{
+            title: "Camera",
+            headerStyle: {
+              backgroundColor: "#1F2937",
+            },
+            headerTintColor: "#fff",
+          }}
+        />
+        <Stack.Screen
+          name="AfterVisualQA"
+          component={AfterVisualQA}
+          options={{
+            title: "Monio AVQA",
+            headerStyle: {
+              backgroundColor: "#1F2937",
+            },
+            headerTintColor: "#fff",
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
