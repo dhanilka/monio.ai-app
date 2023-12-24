@@ -32,7 +32,7 @@ const Login = ({ navigation }) => {
       })
       .then((res) => {
         setisloading(false);
-        console.log(res.data);
+
         if (res.data.status) {
           navigation.replace("Home");
         } else {

@@ -58,7 +58,10 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View className="pt-4">
-          <TouchableOpacity className="bg-slate-700 p-2 rounded-lg">
+          <TouchableOpacity
+            className="bg-slate-700 p-2 rounded-lg"
+            onPress={() => navigation.navigate("Chat")}
+          >
             <Text className="text-white text-lg font-bold">
               Human Writer <FIcon name="user-injured" color="#fff" size={18} />
             </Text>
@@ -72,7 +75,7 @@ const Home = ({ navigation }) => {
         <View className="pt-4">
           <TouchableOpacity
             className="bg-slate-700 p-2 rounded-lg"
-            onPress={() => navigation.navigate("Paraphrase")}
+            onPress={() => navigation.navigate("Chat")}
           >
             <Text className="text-white text-lg font-bold">
               Text paraphrase{" "}
@@ -88,7 +91,7 @@ const Home = ({ navigation }) => {
         <View className="pt-4">
           <TouchableOpacity
             className="bg-slate-700 p-2 rounded-lg"
-            onPress={() => navigation.navigate("Paraphrase")}
+            onPress={() => navigation.navigate("Chat")}
           >
             <Text className="text-white text-lg font-bold">
               Text Generation{" "}

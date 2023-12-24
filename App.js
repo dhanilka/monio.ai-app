@@ -7,8 +7,7 @@ import Login from "./screens/Login";
 import Register from "./screens/Register";
 import Chat from "./screens/Chat";
 import Paraphrase from "./screens/Paraphrase";
-import VisualQA from "./screens/VisualQA";
-import Camerax from "./screens/Camera";
+
 import AfterVisualQA from "./screens/AfterVQA";
 
 const Stack = createStackNavigator();
@@ -38,7 +37,7 @@ export default function App() {
           name="Chat"
           component={Chat}
           options={{
-            title: "Monio Chat",
+            title: "",
             headerStyle: {
               backgroundColor: "#1F2937",
             },
@@ -56,28 +55,7 @@ export default function App() {
             headerTintColor: "#fff",
           }}
         />
-        <Stack.Screen
-          name="VisualQA"
-          component={VisualQA}
-          options={{
-            title: "Monio Visual QA",
-            headerStyle: {
-              backgroundColor: "#1F2937",
-            },
-            headerTintColor: "#fff",
-          }}
-        />
-        <Stack.Screen
-          name="Camera"
-          component={Camerax}
-          options={{
-            title: "Camera",
-            headerStyle: {
-              backgroundColor: "#1F2937",
-            },
-            headerTintColor: "#fff",
-          }}
-        />
+
         <Stack.Screen
           name="AfterVisualQA"
           component={AfterVisualQA}
